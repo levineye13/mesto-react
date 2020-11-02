@@ -3,9 +3,15 @@ import { api } from './../utils/api';
 import Card from './Card';
 import avatar from './../images/profile__avatar.jpg';
 
-function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick }) {
+function Main({
+  onEditProfile,
+  onAddPlace,
+  onEditAvatar,
+  onCardClick,
+  onClickDeleteButton,
+}) {
   const [userAvatar, setUserAvatar] = React.useState(avatar);
-  const [userName, setUserName] = React.useState('Olezhka');
+  const [userName, setUserName] = React.useState('Olezha');
   const [userDescription, setUserDescription] = React.useState('NedoJunior');
   const [cards, setCards] = React.useState([]);
 
@@ -47,23 +53,25 @@ function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick }) {
             className="profile__update-button"
             type="button"
             onClick={onEditAvatar}
-          ></button>
+          />
         </div>
         <div className="profile__info">
           <h1 className="profile__title">{userName}</h1>
-          <button
-            className="profile__edit-button"
-            onClick={onEditProfile}
-          ></button>
+          <button className="profile__edit-button" onClick={onEditProfile} />
           <p className="profile__subtitle">{userDescription}</p>
         </div>
-        <button className="profile__add-button" onClick={onAddPlace}></button>
+        <button className="profile__add-button" onClick={onAddPlace} />
       </section>
       <section className="elements content__elements">
         <ul className="elements__list">
           {cards.map((card) => {
             return (
-              <Card card={card} onCardClick={onCardClick} key={card._id} />
+              <Card
+                card={card}
+                onCardClick={onCardClick}
+                onClickDeleteButton={onClickDeleteButton}
+                key={card._id}
+              />
             );
           })}
         </ul>

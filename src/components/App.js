@@ -4,6 +4,7 @@ import Main from './Main';
 import Footer from './Footer';
 import PopupWithForm from './PopupWithForm';
 import ImagePopup from './ImagePopup';
+import { popupObjectMarkup } from './../utils/utils.js';
 
 function App() {
   const [isEditProfilePopupOpen, setEditProfilePopupOpen] = React.useState(
@@ -11,6 +12,7 @@ function App() {
   );
   const [isAddPlacePopupOpen, setAddPlacePopupOpen] = React.useState(false);
   const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = React.useState(false);
+  const [isConfirmPopupOpen, setConfirmPopupOpen] = React.useState(false);
   const [selectedCard, setSelectedCard] = React.useState(null);
 
   /**
@@ -41,6 +43,7 @@ function App() {
     setEditProfilePopupOpen(false);
     setAddPlacePopupOpen(false);
     setEditAvatarPopupOpen(false);
+    setConfirmPopupOpen(false);
     setSelectedCard(null);
   };
 
@@ -49,6 +52,10 @@ function App() {
    */
   const handleCardClick = function (card) {
     setSelectedCard(card);
+  };
+
+  const handleClickDeleteButton = function () {
+    setConfirmPopupOpen(true);
   };
 
   return (
@@ -60,39 +67,42 @@ function App() {
           onAddPlace={handleAddPlaceClick}
           onEditAvatar={handleEditAvatarClick}
           onCardClick={handleCardClick}
+          onClickDeleteButton={handleClickDeleteButton}
         />
         <Footer />
         <PopupWithForm
           title={'Редактировать профиль'}
-          name={'popup_type_profile'}
-          children={''}
+          name={'profile'}
+          buttonText={'Сохранить'}
+          children={popupObjectMarkup.editProfilePopupMarkup}
           isOpen={isEditProfilePopupOpen}
           onClose={closeAllPopups}
         />
         <PopupWithForm
           title={'Новое место'}
-          name={'popup_type_add-card'}
-          children={''}
+          name={'add-card'}
+          buttonText={'Создать'}
+          children={popupObjectMarkup.addPlacePopupMarkup}
           isOpen={isAddPlacePopupOpen}
           onClose={closeAllPopups}
         />
         <PopupWithForm
           title={'Обновить аватар'}
-          name={'popup_type_update-avatar'}
-          children={''}
+          name={'update-avatar'}
+          buttonText={'Обновить'}
+          children={popupObjectMarkup.updateAvatarPopupMarkup}
           isOpen={isEditAvatarPopupOpen}
           onClose={closeAllPopups}
         />
         <PopupWithForm
           title={'Вы уверены?'}
-          name={'popup_type_confirm'}
+          name={'confirm'}
+          buttonText={'Да'}
           children={''}
-          isOpen={false}
+          isOpen={isConfirmPopupOpen}
           onClose={closeAllPopups}
         />
-        {selectedCard && (
-          <ImagePopup card={selectedCard} onClose={closeAllPopups} />
-        )}
+        <ImagePopup card={selectedCard} onClose={closeAllPopups} />
       </div>
     </div>
   );

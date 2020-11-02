@@ -7,7 +7,11 @@
   "author": {
     "name": "Oleg Zharov",
     "email": "levineye@yandex.ru"
-  },
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/levineye13/mesto-react.git"
+	},
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.5",
     "@testing-library/react": "^11.1.0",
