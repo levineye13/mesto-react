@@ -1,13 +1,13 @@
 {
   "homepage": "https://levineye13.github.io/mesto-react",
   "name": "mesto-react",
-	"version": "0.1.0",
-	"description": "**<ins>[В данном сервисе](https://levineye13.github.io/mesto-react/)</ins>** представлены иллюстрации замых захватывающих мест России.",
-	"private": true,
-	"author": {
-		"name": "Oleg Zharov",
-		"email": "levineye@yandex.ru"
-	},
+  "version": "0.1.0",
+  "description": "**<ins>[В данном сервисе](https://levineye13.github.io/mesto-react/)</ins>** представлены иллюстрации замых захватывающих мест России.",
+  "private": true,
+  "author": {
+    "name": "Oleg Zharov",
+    "email": "levineye@yandex.ru"
+  },
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.5",
     "@testing-library/react": "^11.1.0",
