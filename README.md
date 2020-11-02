@@ -1,74 +1,65 @@
 # Место
 
-**<ins>[В данном сервисе](https://levineye13.github.io/mesto-react/)</ins>** представлены иллюстрации замых захватывающих мест России.
+**<ins>[В данном сервисе](https://levineye13.github.io/mesto/)</ins>** представлены иллюстрации замых захватывающих мест России.
 
-## Getting Started with Create React App
+## Технологии
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+- _БЭМ_
+  - [Основные понятия](https://ru.bem.info/methodology/key-concepts/)
+  - [Файловая структура](https://ru.bem.info/methodology/filestructure/)
+- [Flexbox](https://www.w3.org/TR/css-flexbox-1/)
+- [Grid Layout](https://developer.mozilla.org/ru/docs/Web/CSS/CSS_Grid_Layout/Basic_Concepts_of_Grid_Layout)
+- [Адаптивная верстка](https://developer.mozilla.org/ru/docs/Web/CSS/@media)
+- [DOM](https://developer.mozilla.org/ru/docs/DOM/DOM_Reference/%D0%92%D0%B2%D0%B5%D0%B4%D0%B5%D0%BD%D0%B8%D0%B5)
+- [Валидация формы](https://developer.mozilla.org/ru/docs/Learn/HTML/Forms/%D0%92%D0%B0%D0%BB%D0%B8%D0%B4%D0%B0%D1%86%D0%B8%D1%8F_%D1%84%D0%BE%D1%80%D0%BC%D1%8B)
+- [Асинхронный JS](https://learn.javascript.ru/async)
+- [Работа с API](https://developer.mozilla.org/ru/docs/Learn/JavaScript/Client-side_web_APIs/Introduction)
+- [React](https://ru.reactjs.org/docs/getting-started.html)
+- [Npm](https://docs.npmjs.com/)
 
-## Available Scripts
+## Доступные скрипты
 
-In the project directory, you can run:
+### `npm run start`
 
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+Запускает приложение в режиме разработки.
+Откройте [http://localhost:3000](http://localhost:3000) для просмотра в браузере.
 
 ### `npm test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Запускает средство запуска тестов.
+Дополнительная информация: [running tests](https://facebook.github.io/create-react-app/docs/running-tests).
 
 ### `npm run build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Собирает готовое приложение в папку `build`.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Деплой проекта на GitHub Pages
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### 1. Добавьте `homepage` в `package.json`
 
-### `npm run eject`
+    "homepage": "https://myusername.github.io/my-app",
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+### 2. Установите `gh-pages`
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+    npm install --save gh-pages
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+### 3. Добавьте `скрипты` для деплоя в `package.json`
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+    "scripts": {
+      "predeploy": "npm run build",   +
+      "deploy": "gh-pages -d build",  +
+      "start": "react-scripts start",
+      "build": "react-scripts build",
+    }
 
-## Learn More
+### 4. Разверните сайт, запустив `npm run deploy`
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+    npm run deploy
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### 5. Убедитесь, что в настройках проекта используется `gh-pages`
 
-### Code Splitting
+<img src="https://i.imgur.com/HUjEr9l.png" width=500 />
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+### 6. Опционально. Вы можете настроить собственный `домен`
 
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Подробнее: [Установка домена](https://create-react-app.dev/docs/deployment/#step-5-optionally-configure-the-domain)
