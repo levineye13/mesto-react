@@ -18,6 +18,6 @@
 
 .profile__update-button:hover {
   background: rgba(0, 0, 0, 0.8)
-    url('./../../../images/profile__update-button.png') center/26px 26px
+    url('./../../../images/profile__update-button.svg') center/26px 26px
     no-repeat;
 }
