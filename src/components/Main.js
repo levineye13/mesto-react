@@ -1,7 +1,7 @@
 import React from 'react';
 import { api } from './../utils/api';
 import Card from './Card';
-import avatar from './../images/profile__avatar.jpg';
+import { CurrentUserContext } from './../contexts/CurrentUserContext';
 
 function Main({
   onEditProfile,
@@ -10,10 +10,9 @@ function Main({
   onCardClick,
   onClickDeleteButton,
 }) {
-  const [userAvatar, setUserAvatar] = React.useState(avatar);
-  const [userName, setUserName] = React.useState('Olezha');
-  const [userDescription, setUserDescription] = React.useState('NedoJunior');
   const [cards, setCards] = React.useState([]);
+  const currentUser = React.useContext(CurrentUserContext);
+  //const { avatar, name, about } = currentUser;
 
   /**
    * Отрисовка первоначальных данных при монтировании компонента.
@@ -22,20 +21,9 @@ function Main({
    */
   React.useEffect(() => {
     api
-      .getAllInitialData()
-      .then((dataArray) => {
-        return dataArray.map((item) => item.value);
-      })
-      .then((initialData) => {
-        const [userInfo, cardData] = initialData;
-        /**
-         * Если промис не вернул данные, переменная равна undefined, то не меняем стейт-переменные.
-         */
-        if (userInfo) {
-          setUserName(userInfo.name);
-          setUserDescription(userInfo.about);
-          setUserAvatar(userInfo.avatar);
-        }
+      .getInitialCards()
+      .then((cardData) => {
+        console.log(cardData[0]);
         if (cardData) {
           setCards(cardData);
         }
@@ -47,7 +35,11 @@ function Main({
     <main className="content">
       <section className="profile content__profile">
         <div className="profile__avatar-container">
-          <img src={userAvatar} alt={userName} className="profile__avatar" />
+          <img
+            src={currentUser.avatar}
+            alt={currentUser.name}
+            className="profile__avatar"
+          />
           <button
             className="profile__update-button"
             type="button"
@@ -55,9 +47,9 @@ function Main({
           />
         </div>
         <div className="profile__info">
-          <h1 className="profile__title">{userName}</h1>
+          <h1 className="profile__title">{currentUser.name}</h1>
           <button className="profile__edit-button" onClick={onEditProfile} />
-          <p className="profile__subtitle">{userDescription}</p>
+          <p className="profile__subtitle">{currentUser.about}</p>
         </div>
         <button className="profile__add-button" onClick={onAddPlace} />
       </section>

@@ -4,9 +4,10 @@ import Main from './Main';
 import Footer from './Footer';
 import PopupWithForm from './PopupWithForm';
 import ImagePopup from './ImagePopup';
-import { popupObjectMarkup } from './../utils/utils.js';
-import { api } from './../utils/api.js';
-import { CurrentUserContext } from './../contexts/CurrentUserContext.js';
+import { popupObjectMarkup } from './../utils/utils';
+import { api } from './../utils/api';
+import { CurrentUserContext } from './../contexts/CurrentUserContext';
+import avatarImg from './../images/profile__avatar.jpg';
 
 function App() {
   const [isEditProfilePopupOpen, setEditProfilePopupOpen] = React.useState(
@@ -16,7 +17,13 @@ function App() {
   const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = React.useState(false);
   const [isConfirmPopupOpen, setConfirmPopupOpen] = React.useState(false);
   const [selectedCard, setSelectedCard] = React.useState(null);
-  const [currentUser, setCurrentUser] = React.useState(null);
+
+  //Дефолтная инициализация в случае невыполнения запроса к api.
+  const [currentUser, setCurrentUser] = React.useState({
+    avatar: avatarImg,
+    name: 'Olezha',
+    about: 'NedoJunior',
+  });
 
   /**
    * Обработчик открытия попапа редактирования профиля.
@@ -62,7 +69,14 @@ function App() {
   };
 
   React.useEffect(() => {
-    api.getUserInfo().then((userData) => setCurrentUser(userData));
+    api
+      .getUserInfo()
+      .then((userData) => {
+        if (userData) {
+          setCurrentUser({ ...userData });
+        }
+      })
+      .catch((err) => console.error(err));
   }, []);
 
   return (
