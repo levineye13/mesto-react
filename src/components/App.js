@@ -5,6 +5,8 @@ import Footer from './Footer';
 import PopupWithForm from './PopupWithForm';
 import ImagePopup from './ImagePopup';
 import { popupObjectMarkup } from './../utils/utils.js';
+import { api } from './../utils/api.js';
+import { CurrentUserContext } from './../contexts/CurrentUserContext.js';
 
 function App() {
   const [isEditProfilePopupOpen, setEditProfilePopupOpen] = React.useState(
@@ -14,6 +16,7 @@ function App() {
   const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = React.useState(false);
   const [isConfirmPopupOpen, setConfirmPopupOpen] = React.useState(false);
   const [selectedCard, setSelectedCard] = React.useState(null);
+  const [currentUser, setCurrentUser] = React.useState(null);
 
   /**
    * Обработчик открытия попапа редактирования профиля.
@@ -58,53 +61,59 @@ function App() {
     setConfirmPopupOpen(true);
   };
 
+  React.useEffect(() => {
+    api.getUserInfo().then((userData) => setCurrentUser(userData));
+  }, []);
+
   return (
-    <div className="App">
-      <div className="page">
-        <Header />
-        <Main
-          onEditProfile={handleEditProfileClick}
-          onAddPlace={handleAddPlaceClick}
-          onEditAvatar={handleEditAvatarClick}
-          onCardClick={handleCardClick}
-          onClickDeleteButton={handleClickDeleteButton}
-        />
-        <Footer />
-        <PopupWithForm
-          title={'Редактировать профиль'}
-          name={'profile'}
-          buttonText={'Сохранить'}
-          children={popupObjectMarkup.editProfilePopupMarkup}
-          isOpen={isEditProfilePopupOpen}
-          onClose={closeAllPopups}
-        />
-        <PopupWithForm
-          title={'Новое место'}
-          name={'add-card'}
-          buttonText={'Создать'}
-          children={popupObjectMarkup.addPlacePopupMarkup}
-          isOpen={isAddPlacePopupOpen}
-          onClose={closeAllPopups}
-        />
-        <PopupWithForm
-          title={'Обновить аватар'}
-          name={'update-avatar'}
-          buttonText={'Обновить'}
-          children={popupObjectMarkup.updateAvatarPopupMarkup}
-          isOpen={isEditAvatarPopupOpen}
-          onClose={closeAllPopups}
-        />
-        <PopupWithForm
-          title={'Вы уверены?'}
-          name={'confirm'}
-          buttonText={'Да'}
-          children={''}
-          isOpen={isConfirmPopupOpen}
-          onClose={closeAllPopups}
-        />
-        <ImagePopup card={selectedCard} onClose={closeAllPopups} />
+    <CurrentUserContext.Provider value={currentUser}>
+      <div className="App">
+        <div className="page">
+          <Header />
+          <Main
+            onEditProfile={handleEditProfileClick}
+            onAddPlace={handleAddPlaceClick}
+            onEditAvatar={handleEditAvatarClick}
+            onCardClick={handleCardClick}
+            onClickDeleteButton={handleClickDeleteButton}
+          />
+          <Footer />
+          <PopupWithForm
+            title={'Редактировать профиль'}
+            name={'profile'}
+            buttonText={'Сохранить'}
+            children={popupObjectMarkup.editProfilePopupMarkup}
+            isOpen={isEditProfilePopupOpen}
+            onClose={closeAllPopups}
+          />
+          <PopupWithForm
+            title={'Новое место'}
+            name={'add-card'}
+            buttonText={'Создать'}
+            children={popupObjectMarkup.addPlacePopupMarkup}
+            isOpen={isAddPlacePopupOpen}
+            onClose={closeAllPopups}
+          />
+          <PopupWithForm
+            title={'Обновить аватар'}
+            name={'update-avatar'}
+            buttonText={'Обновить'}
+            children={popupObjectMarkup.updateAvatarPopupMarkup}
+            isOpen={isEditAvatarPopupOpen}
+            onClose={closeAllPopups}
+          />
+          <PopupWithForm
+            title={'Вы уверены?'}
+            name={'confirm'}
+            buttonText={'Да'}
+            children={''}
+            isOpen={isConfirmPopupOpen}
+            onClose={closeAllPopups}
+          />
+          <ImagePopup card={selectedCard} onClose={closeAllPopups} />
+        </div>
       </div>
-    </div>
+    </CurrentUserContext.Provider>
   );
 }
 

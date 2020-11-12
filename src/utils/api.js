@@ -9,13 +9,12 @@ class Api {
    *
    * @param  {Object} responce - объект ответа сервера
    */
-  _checkResponceStatus(responce) {
+  async _checkResponceStatus(responce) {
     if (responce.ok) {
-      return responce.json();
+      const json = await responce.json();
+      return json;
     }
-    return Promise.reject(
-      `Ошибка: ${responce.status} - ${responce.statusText}`
-    );
+    throw new Error(`Ошибка: ${responce.status} - ${responce.statusText}`);
   }
 
   /**
@@ -23,11 +22,18 @@ class Api {
    *
    * @return {Object}
    */
-  getProfileInfo() {
-    return fetch(`${this._baseUrl}/users/me`, {
-      method: 'GET',
-      headers: this._headers,
-    }).then((responce) => this._checkResponceStatus(responce));
+  async getUserInfo() {
+    try {
+      const responce = await fetch(`${this._baseUrl}/users/me`, {
+        method: 'GET',
+        headers: this._headers,
+      });
+      //Дожидаемся ответа. Если функция вернет ошибку, выводим ее.
+      const data = await this._checkResponceStatus(responce);
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   /**
@@ -35,19 +41,33 @@ class Api {
    *
    * @return {Object}
    */
-  getInitialCards() {
-    return fetch(`${this._baseUrl}/cards`, {
-      method: 'GET',
-      headers: this._headers,
-    }).then((responce) => this._checkResponceStatus(responce));
+  async getInitialCards() {
+    try {
+      const responce = await fetch(`${this._baseUrl}/cards`, {
+        method: 'GET',
+        headers: this._headers,
+      });
+      const data = await this._checkResponceStatus(responce);
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
   }
 
-  getValidInitialData() {
-    return Promise.all([this.getProfileInfo(), this.getInitialCards()]);
+  async getValidInitialData() {
+    const initialData = await Promise.all([
+      this.getUserInfo(),
+      this.getInitialCards(),
+    ]);
+    return initialData;
   }
 
-  getAllInitialData() {
-    return Promise.allSettled([this.getProfileInfo(), this.getInitialCards()]);
+  async getAllInitialData() {
+    const initialData = await Promise.allSettled([
+      this.getUserInfo(),
+      this.getInitialCards(),
+    ]);
+    return initialData;
   }
 
   editProfile(data) {

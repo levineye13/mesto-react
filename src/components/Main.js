@@ -17,7 +17,8 @@ function Main({
 
   /**
    * Отрисовка первоначальных данных при монтировании компонента.
-   * Используется Promise.allSettled
+   * Используется Promise.allSettled, чтобы при ошибке одного из
+   * промисов выполнился другой.
    */
   React.useEffect(() => {
     api
@@ -27,7 +28,6 @@ function Main({
       })
       .then((initialData) => {
         const [userInfo, cardData] = initialData;
-
         /**
          * Если промис не вернул данные, переменная равна undefined, то не меняем стейт-переменные.
          */
@@ -36,12 +36,11 @@ function Main({
           setUserDescription(userInfo.about);
           setUserAvatar(userInfo.avatar);
         }
-
         if (cardData) {
           setCards(cardData);
         }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.error(err));
   }, []);
 
   return (
