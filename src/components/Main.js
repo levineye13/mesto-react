@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import { api } from './../utils/api';
 import Card from './Card';
 import { CurrentUserContext } from './../contexts/CurrentUserContext';
@@ -10,8 +10,8 @@ function Main({
   onCardClick,
   onCardDelete,
 }) {
-  const [cards, setCards] = React.useState([]);
-  const currentUser = React.useContext(CurrentUserContext);
+  const [cards, setCards] = useState([]);
+  const currentUser = useContext(CurrentUserContext);
 
   const handleCardLike = function (card) {
     const isLiked = card.likes.some((like) => currentUser._id === like._id);

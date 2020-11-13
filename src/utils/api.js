@@ -70,14 +70,14 @@ class Api {
     return initialData;
   }
 
-  async editProfile(data) {
+  async setUserInfo(dataUser) {
     try {
       const responce = await fetch(`${this._baseUrl}/users/me`, {
         method: 'PATCH',
         headers: this._headers,
         body: JSON.stringify({
-          name: data.name,
-          about: data.about,
+          name: dataUser.name,
+          about: dataUser.about,
         }),
       });
       const data = await this._checkResponceStatus(responce);

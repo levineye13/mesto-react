@@ -1,25 +1,24 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Header from './Header';
 import Main from './Main';
 import Footer from './Footer';
 import PopupWithForm from './PopupWithForm';
 import ImagePopup from './ImagePopup';
+import EditProfilePopup from './EditProfilePopup';
 import { popupObjectMarkup } from './../utils/utils';
 import { api } from './../utils/api';
 import { CurrentUserContext } from './../contexts/CurrentUserContext';
 import avatarImg from './../images/profile__avatar.jpg';
 
 function App() {
-  const [isEditProfilePopupOpen, setEditProfilePopupOpen] = React.useState(
-    false
-  );
-  const [isAddPlacePopupOpen, setAddPlacePopupOpen] = React.useState(false);
-  const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = React.useState(false);
-  const [isConfirmPopupOpen, setConfirmPopupOpen] = React.useState(false);
-  const [selectedCard, setSelectedCard] = React.useState(null);
+  const [isEditProfilePopupOpen, setEditProfilePopupOpen] = useState(false);
+  const [isAddPlacePopupOpen, setAddPlacePopupOpen] = useState(false);
+  const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = useState(false);
+  const [isConfirmPopupOpen, setConfirmPopupOpen] = useState(false);
+  const [selectedCard, setSelectedCard] = useState(null);
 
   //Дефолтная инициализация в случае невыполнения запроса к api.
-  const [currentUser, setCurrentUser] = React.useState({
+  const [currentUser, setCurrentUser] = useState({
     avatar: avatarImg,
     name: 'Olezha',
     about: 'NedoJunior',
@@ -68,6 +67,13 @@ function App() {
     setConfirmPopupOpen(true);
   };
 
+  const handleUpdateUser = function ({ name, about }) {
+    api.setUserInfo({ name, about }).then((userData) => {
+      setCurrentUser(userData);
+      closeAllPopups();
+    });
+  };
+
   React.useEffect(() => {
     api
       .getUserInfo()
@@ -92,13 +98,10 @@ function App() {
             onCardDelete={handleCardDelete}
           />
           <Footer />
-          <PopupWithForm
-            title={'Редактировать профиль'}
-            name={'profile'}
-            buttonText={'Сохранить'}
-            children={popupObjectMarkup.editProfilePopupMarkup}
+          <EditProfilePopup
             isOpen={isEditProfilePopupOpen}
             onClose={closeAllPopups}
+            onUpdateUser={handleUpdateUser}
           />
           <PopupWithForm
             title={'Новое место'}
