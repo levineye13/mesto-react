@@ -64,7 +64,7 @@ function App() {
     setSelectedCard(card);
   };
 
-  const handleClickDeleteButton = function () {
+  const handleCardDelete = function () {
     setConfirmPopupOpen(true);
   };
 
@@ -89,7 +89,7 @@ function App() {
             onAddPlace={handleAddPlaceClick}
             onEditAvatar={handleEditAvatarClick}
             onCardClick={handleCardClick}
-            onClickDeleteButton={handleClickDeleteButton}
+            onCardDelete={handleCardDelete}
           />
           <Footer />
           <PopupWithForm
