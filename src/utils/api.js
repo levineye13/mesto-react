@@ -70,14 +70,14 @@ class Api {
     return initialData;
   }
 
-  async setUserInfo(dataUser) {
+  async setUserInfo({ name, about }) {
     try {
       const responce = await fetch(`${this._baseUrl}/users/me`, {
         method: 'PATCH',
         headers: this._headers,
         body: JSON.stringify({
-          name: dataUser.name,
-          about: dataUser.about,
+          name,
+          about,
         }),
       });
       const data = await this._checkResponceStatus(responce);
@@ -130,13 +130,13 @@ class Api {
     }
   }
 
-  async updateUserAvatar(avatarLink) {
+  async updateUserAvatar(avatar) {
     try {
       const responce = await fetch(`${this._baseUrl}/users/me/avatar`, {
         method: 'PATCH',
         headers: this._headers,
         body: JSON.stringify({
-          avatar: avatarLink,
+          avatar,
         }),
       });
       const data = await this._checkResponceStatus(responce);

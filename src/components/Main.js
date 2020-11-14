@@ -8,50 +8,12 @@ function Main({
   onAddPlace,
   onEditAvatar,
   onCardClick,
+  //onCardDelete,
+  cards,
+  onCardLike,
   onCardDelete,
 }) {
-  const [cards, setCards] = useState([]);
   const currentUser = useContext(CurrentUserContext);
-
-  const handleCardLike = function (card) {
-    const isLiked = card.likes.some((like) => currentUser._id === like._id);
-
-    api
-      .changeLikeCardStatus(card._id, isLiked ? 'DELETE' : 'PUT')
-      .then((newCard) => {
-        const newCards = cards.map((currentCard) =>
-          currentCard._id === card._id ? newCard : currentCard
-        );
-        setCards(newCards);
-      })
-      .catch((error) => console.error(error));
-  };
-
-  const handleCardDelete = function (card) {
-    api
-      .deleteCard(card._id)
-      .then(() => {
-        const newCards = cards.filter(
-          (currentCard) => currentCard._id !== card._id
-        );
-        setCards(newCards);
-      })
-      .catch((error) => console.error(error));
-  };
-
-  /**
-   * Отрисовка первоначальных данных при монтировании компонента.
-   */
-  React.useEffect(() => {
-    api
-      .getInitialCards()
-      .then((cardData) => {
-        if (cardData) {
-          setCards(cardData);
-        }
-      })
-      .catch((err) => console.error(err));
-  }, []);
 
   return (
     <main className="content">
@@ -82,8 +44,8 @@ function Main({
               <Card
                 card={card}
                 onCardClick={onCardClick}
-                onCardDelete={handleCardDelete}
-                onCardLike={handleCardLike}
+                onCardDelete={onCardDelete}
+                onCardLike={onCardLike}
                 key={card._id}
               />
             );
