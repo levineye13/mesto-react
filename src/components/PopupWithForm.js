@@ -1,6 +1,6 @@
 import React from 'react';
 
-const PopupWithForm = function (props) {
+const PopupWithForm = React.memo(function (props) {
   return (
     <section
       className={`popup popup_type_${props.name} ${
@@ -29,6 +29,6 @@ const PopupWithForm = function (props) {
       </div>
     </section>
   );
-};
+});
 
 export default PopupWithForm;
