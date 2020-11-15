@@ -7,6 +7,7 @@ import ImagePopup from './ImagePopup';
 import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
 import AddPlacePopup from './AddPlacePopup';
+import ConfirmDeleteCardPopup from './ConfirmDeleteCardPopup';
 import { api } from './../utils/api';
 import { CurrentUserContext } from './../contexts/CurrentUserContext';
 import avatarImg from './../images/profile__avatar.jpg';
@@ -18,6 +19,7 @@ const App = function () {
   const [isConfirmPopupOpen, setConfirmPopupOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState(null);
   const [cards, setCards] = useState([]);
+  const [removableCard, setRemovableCard] = useState(null);
 
   //Дефолтная инициализация в случае невыполнения запроса к api.
   const [currentUser, setCurrentUser] = useState({
@@ -65,9 +67,10 @@ const App = function () {
     setSelectedCard(card);
   };
 
-  // const handleCardDelete = function () {
-  //   setConfirmPopupOpen(true);
-  // };
+  const handleDeleteButtonClick = function (card) {
+    setConfirmPopupOpen(true);
+    setRemovableCard(card);
+  };
 
   const handleUpdateUser = function ({ name, about }) {
     api
@@ -111,6 +114,7 @@ const App = function () {
           (currentCard) => currentCard._id !== card._id
         );
         setCards(newCards);
+        closeAllPopups();
       })
       .catch((error) => console.error(error));
   };
@@ -160,10 +164,9 @@ const App = function () {
             onAddPlace={handleAddPlaceClick}
             onEditAvatar={handleEditAvatarClick}
             onCardClick={handleCardClick}
-            //onCardDelete={''}
+            onDeleteButtonClick={handleDeleteButtonClick}
             cards={cards}
             onCardLike={handleCardLike}
-            onCardDelete={handleCardDelete}
           />
           <Footer />
           <EditProfilePopup
@@ -181,13 +184,11 @@ const App = function () {
             onClose={closeAllPopups}
             onAddPlace={handleAddPlaceSubmit}
           />
-          <PopupWithForm
-            title={'Вы уверены?'}
-            name={'confirm'}
-            buttonText={'Да'}
-            children={''}
+          <ConfirmDeleteCardPopup
             isOpen={isConfirmPopupOpen}
             onClose={closeAllPopups}
+            onDeleteCard={handleCardDelete}
+            card={removableCard}
           />
           <ImagePopup card={selectedCard} onClose={closeAllPopups} />
         </div>

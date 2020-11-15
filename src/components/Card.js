@@ -1,7 +1,7 @@
 import React from 'react';
 import { CurrentUserContext } from './../contexts/CurrentUserContext';
 
-const Card = function ({ card, onCardClick, onCardDelete, onCardLike }) {
+const Card = function ({ card, onCardClick, onDeleteButtonClick, onCardLike }) {
   const currentUser = React.useContext(CurrentUserContext);
   const isOwn = currentUser._id === card.owner._id;
   const isLiked = card.likes.some((like) => currentUser._id === like._id);
@@ -10,8 +10,8 @@ const Card = function ({ card, onCardClick, onCardDelete, onCardLike }) {
     onCardClick(card);
   };
 
-  const handleDeleteClick = function () {
-    onCardDelete(card);
+  const handleDeleteButtonClick = function () {
+    onDeleteButtonClick(card);
   };
 
   const handleLikeClick = function () {
@@ -26,7 +26,7 @@ const Card = function ({ card, onCardClick, onCardDelete, onCardLike }) {
         }`}
         onClick={(evt) => {
           evt.stopPropagation();
-          handleDeleteClick();
+          handleDeleteButtonClick();
         }}
       />
       <img src={card.link} alt={card.name} className="elements__img" />
