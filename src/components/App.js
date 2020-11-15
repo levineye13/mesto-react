@@ -11,7 +11,7 @@ import { api } from './../utils/api';
 import { CurrentUserContext } from './../contexts/CurrentUserContext';
 import avatarImg from './../images/profile__avatar.jpg';
 
-function App() {
+const App = function () {
   const [isEditProfilePopupOpen, setEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setAddPlacePopupOpen] = useState(false);
   const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = useState(false);
@@ -194,6 +194,6 @@ function App() {
       </div>
     </CurrentUserContext.Provider>
   );
-}
+};
 
 export default App;

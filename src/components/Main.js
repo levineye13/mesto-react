@@ -3,7 +3,7 @@ import { api } from './../utils/api';
 import Card from './Card';
 import { CurrentUserContext } from './../contexts/CurrentUserContext';
 
-function Main({
+const Main = function ({
   onEditProfile,
   onAddPlace,
   onEditAvatar,
@@ -54,6 +54,6 @@ function Main({
       </section>
     </main>
   );
-}
+};
 
 export default Main;

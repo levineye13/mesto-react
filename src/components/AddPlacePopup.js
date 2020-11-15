@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PopupWithForm from './PopupWithForm';
 
-function AddPlacePopup({ isOpen, onClose, onAddPlace }) {
+const AddPlacePopup = function ({ isOpen, onClose, onAddPlace }) {
   const [name, setName] = useState('');
   const [link, setLink] = useState('');
 
@@ -65,6 +65,6 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace }) {
       onSubmit={handleSubmit}
     />
   );
-}
+};
 
 export default AddPlacePopup;
