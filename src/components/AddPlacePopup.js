@@ -19,12 +19,18 @@ const AddPlacePopup = function ({
     setLink(evt.target.value);
   };
 
+  const resetInputValue = function () {
+    setName('');
+    setLink('');
+  };
+
   const handleSubmit = function (evt) {
     evt.preventDefault();
 
     onAddPlace({
       name,
       link,
+      resetInputValue,
     });
   };
 

@@ -12,10 +12,11 @@ const PopupWithForm = React.memo(function (props) {
         <button
           className="popup__close-button button"
           onClick={props.onClose}
+          type="button"
         />
         <form
           action="#"
-          id="edit-form"
+          id={props.name}
           className="popup__form"
           name={`popup-${props.name}`}
           onSubmit={props.onSubmit}
@@ -23,7 +24,7 @@ const PopupWithForm = React.memo(function (props) {
         >
           <h2 className="popup__title">{props.title}</h2>
           {props.children}
-          <button className="popup__save-button button">
+          <button className="popup__save-button button" type="submit">
             {props.buttonText}
           </button>
         </form>

@@ -81,8 +81,8 @@
   border-radius: 50%;
   background-color: transperent;
   border: 13px solid #fff;
-  border-top-color: #a9a9a9;
-  border-bottom-color: #a9a9a9;
+  border-top-color: #4f4f4f;
+  border-bottom-color: #4f4f4f;
   -moz-animation: loader 2s linear 0s infinite;
   -webkit-animation: loader 2s linear 0s infinite;
   animation: loader 2s linear 0s infinite;

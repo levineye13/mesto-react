@@ -9,6 +9,7 @@ import AddPlacePopup from './AddPlacePopup';
 import ConfirmDeleteCardPopup from './ConfirmDeleteCardPopup';
 import { api } from './../utils/api';
 import { CurrentUserContext } from './../contexts/CurrentUserContext';
+import { validator } from './../utils/formValidator';
 import Loader from './Loader';
 import avatarImg from './../images/profile__avatar.jpg';
 
@@ -89,14 +90,19 @@ const App = function () {
       .catch((error) => console.error(error));
   };
 
-  const handleUpdateAvatar = function ({ avatar }) {
+  const handleUpdateAvatar = function ({ avatar, resetInputValue }) {
     api
       .updateUserAvatar(avatar)
       .then((userData) => {
-        setCurrentUser(userData);
         closeAllPopups();
+        setLoaderActive(true);
+        setCurrentUser(userData);
       })
-      .catch((error) => console.error(error));
+      .catch((error) => console.error(error))
+      .finally(() => {
+        setLoaderActive(false);
+        resetInputValue();
+      });
   };
 
   const handleCardLike = function (card) {
@@ -128,17 +134,20 @@ const App = function () {
       .finally(() => setLoaderActive(false));
   };
 
-  const handleAddPlaceSubmit = function ({ name, link }) {
+  const handleAddPlaceSubmit = function ({ name, link, resetInputValue }) {
     api
       .addCard({ name, link })
       .then((newCard) => {
         closeAllPopups();
-        //TODO не отображается спиннер при удалении/добавлении карточки
+        //TODO не отображается спиннер при удалении/добавлении карточки даже в slow 3g =(
         setLoaderActive(true);
         setCards([newCard, ...cards]);
       })
       .catch((error) => console.error(error))
-      .finally(() => setLoaderActive(false));
+      .finally(() => {
+        setLoaderActive(false);
+        resetInputValue();
+      });
   };
 
   /**
@@ -161,6 +170,7 @@ const App = function () {
       .finally(() => setLoaderActive(false));
   }, []);
 
+  //Обработчик закрытия попапа по клику на Escape
   useEffect(() => {
     const handleEscClickClose = function (evt) {
       if (evt.key === 'Escape') {
@@ -174,6 +184,9 @@ const App = function () {
       document.removeEventListener('keydown', handleEscClickClose);
     };
   }, []);
+
+  //Включение валидации форм
+  useEffect(() => validator.enableValidation(), []);
 
   return (
     <CurrentUserContext.Provider value={currentUser}>

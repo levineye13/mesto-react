@@ -10,11 +10,16 @@ const EditAvatarPopup = function ({
 }) {
   const inputRef = useRef();
 
+  const resetInputValue = function () {
+    inputRef.current.value = '';
+  };
+
   const handleSubmit = function (evt) {
     evt.preventDefault();
 
     onUpdateAvatar({
       avatar: inputRef.current.value,
+      resetInputValue,
     });
   };
 

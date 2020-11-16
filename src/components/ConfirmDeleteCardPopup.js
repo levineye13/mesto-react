@@ -10,7 +10,6 @@ const ConfirmDeleteCardPopup = function ({
 }) {
   const handleSubmit = function (evt) {
     evt.preventDefault();
-
     onDeleteCard(card);
   };
 
