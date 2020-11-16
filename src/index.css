@@ -54,3 +54,5 @@
 @import url('./blocks/popup/__title-img/popup__title-img.css');
 @import url('./blocks/button/button.css');
 @import url('./blocks/button/_inactive/button_inactive.css');
+@import url('./blocks/animation/animation.css');
+@import url('./blocks/animation/_type/animation_type_loader.css');

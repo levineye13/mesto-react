@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from './Header';
 import Main from './Main';
 import Footer from './Footer';
@@ -10,6 +10,7 @@ import AddPlacePopup from './AddPlacePopup';
 import ConfirmDeleteCardPopup from './ConfirmDeleteCardPopup';
 import { api } from './../utils/api';
 import { CurrentUserContext } from './../contexts/CurrentUserContext';
+import Loader from './Loader';
 import avatarImg from './../images/profile__avatar.jpg';
 
 const App = function () {
@@ -20,6 +21,7 @@ const App = function () {
   const [selectedCard, setSelectedCard] = useState(null);
   const [cards, setCards] = useState([]);
   const [removableCard, setRemovableCard] = useState(null);
+  const [isLoaderActive, setLoaderActive] = useState(true);
 
   //Дефолтная инициализация в случае невыполнения запроса к api.
   const [currentUser, setCurrentUser] = useState({
@@ -110,11 +112,11 @@ const App = function () {
     api
       .deleteCard(card._id)
       .then(() => {
+        closeAllPopups();
         const newCards = cards.filter(
           (currentCard) => currentCard._id !== card._id
         );
         setCards(newCards);
-        closeAllPopups();
       })
       .catch((error) => console.error(error));
   };
@@ -123,35 +125,30 @@ const App = function () {
     api
       .addCard({ name, link })
       .then((newCard) => {
-        setCards([newCard, ...cards]);
         closeAllPopups();
+        setCards([newCard, ...cards]);
       })
       .catch((error) => console.error(error));
   };
 
   /**
    * Отрисовка первоначальных данных при монтировании компонента.
+   * (Promise.allSettled)
    */
-  React.useEffect(() => {
+  useEffect(() => {
     api
-      .getInitialCards()
-      .then((cardData) => {
-        if (cardData) {
-          setCards(cardData);
+      .getAllInitialData()
+      .then((dataArray) => dataArray.map((item) => item.value))
+      .then(([dataUser, dataCards]) => {
+        if (dataUser) {
+          setCurrentUser(dataUser);
+        }
+        if (dataCards) {
+          setCards(dataCards);
         }
       })
-      .catch((err) => console.error(err));
-  }, []);
-
-  React.useEffect(() => {
-    api
-      .getUserInfo()
-      .then((userData) => {
-        if (userData) {
-          setCurrentUser(userData);
-        }
-      })
-      .catch((err) => console.error(err));
+      .catch((error) => console.error(error))
+      .finally(() => setLoaderActive(false));
   }, []);
 
   return (
@@ -191,6 +188,7 @@ const App = function () {
             card={removableCard}
           />
           <ImagePopup card={selectedCard} onClose={closeAllPopups} />
+          {isLoaderActive && <Loader />}
         </div>
       </div>
     </CurrentUserContext.Provider>
