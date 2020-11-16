@@ -3,7 +3,12 @@ import PopupWithForm from './PopupWithForm';
 import { CurrentUserContext } from './../contexts/CurrentUserContext';
 import { returnProfileMarkup } from './../utils/utils';
 
-const EditProfilePopup = function ({ isOpen, onClose, onUpdateUser }) {
+const EditProfilePopup = function ({
+  isOpen,
+  onClose,
+  onScreenClickClose,
+  onUpdateUser,
+}) {
   const currentUser = useContext(CurrentUserContext);
   const [name, setName] = useState(currentUser.name);
   const [description, setDescription] = useState(currentUser.about);
@@ -43,6 +48,7 @@ const EditProfilePopup = function ({ isOpen, onClose, onUpdateUser }) {
       })}
       isOpen={isOpen}
       onClose={onClose}
+      onScreenClickClose={onScreenClickClose}
       onSubmit={handleSubmit}
     />
   );

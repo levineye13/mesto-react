@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import Header from './Header';
 import Main from './Main';
 import Footer from './Footer';
-import PopupWithForm from './PopupWithForm';
 import ImagePopup from './ImagePopup';
 import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
@@ -62,6 +61,12 @@ const App = function () {
     setSelectedCard(null);
   };
 
+  const handleScreenClickClose = function (evt) {
+    if (evt.target.classList.contains('popup')) {
+      closeAllPopups();
+    }
+  };
+
   /**
    * Обработчик клика по карточке.
    */
@@ -113,12 +118,14 @@ const App = function () {
       .deleteCard(card._id)
       .then(() => {
         closeAllPopups();
+        setLoaderActive(true);
         const newCards = cards.filter(
           (currentCard) => currentCard._id !== card._id
         );
         setCards(newCards);
       })
-      .catch((error) => console.error(error));
+      .catch((error) => console.error(error))
+      .finally(() => setLoaderActive(false));
   };
 
   const handleAddPlaceSubmit = function ({ name, link }) {
@@ -126,9 +133,12 @@ const App = function () {
       .addCard({ name, link })
       .then((newCard) => {
         closeAllPopups();
+        //TODO не отображается спиннер при удалении/добавлении карточки
+        setLoaderActive(true);
         setCards([newCard, ...cards]);
       })
-      .catch((error) => console.error(error));
+      .catch((error) => console.error(error))
+      .finally(() => setLoaderActive(false));
   };
 
   /**
@@ -151,6 +161,20 @@ const App = function () {
       .finally(() => setLoaderActive(false));
   }, []);
 
+  useEffect(() => {
+    const handleEscClickClose = function (evt) {
+      if (evt.key === 'Escape') {
+        closeAllPopups();
+      }
+    };
+
+    document.addEventListener('keydown', handleEscClickClose);
+
+    return () => {
+      document.removeEventListener('keydown', handleEscClickClose);
+    };
+  }, []);
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="App">
@@ -169,25 +193,33 @@ const App = function () {
           <EditProfilePopup
             isOpen={isEditProfilePopupOpen}
             onClose={closeAllPopups}
+            onScreenClickClose={handleScreenClickClose}
             onUpdateUser={handleUpdateUser}
           />
           <EditAvatarPopup
             isOpen={isEditAvatarPopupOpen}
             onClose={closeAllPopups}
+            onScreenClickClose={handleScreenClickClose}
             onUpdateAvatar={handleUpdateAvatar}
           />
           <AddPlacePopup
             isOpen={isAddPlacePopupOpen}
             onClose={closeAllPopups}
+            onScreenClickClose={handleScreenClickClose}
             onAddPlace={handleAddPlaceSubmit}
           />
           <ConfirmDeleteCardPopup
             isOpen={isConfirmPopupOpen}
             onClose={closeAllPopups}
+            onScreenClickClose={handleScreenClickClose}
             onDeleteCard={handleCardDelete}
             card={removableCard}
           />
-          <ImagePopup card={selectedCard} onClose={closeAllPopups} />
+          <ImagePopup
+            card={selectedCard}
+            onClose={closeAllPopups}
+            onScreenClickClose={handleScreenClickClose}
+          />
           {isLoaderActive && <Loader />}
         </div>
       </div>

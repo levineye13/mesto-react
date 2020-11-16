@@ -2,7 +2,12 @@ import React, { useState } from 'react';
 import PopupWithForm from './PopupWithForm';
 import { returnAddPlaceMarkup } from './../utils/utils';
 
-const AddPlacePopup = function ({ isOpen, onClose, onAddPlace }) {
+const AddPlacePopup = function ({
+  isOpen,
+  onClose,
+  onScreenClickClose,
+  onAddPlace,
+}) {
   const [name, setName] = useState('');
   const [link, setLink] = useState('');
 
@@ -36,6 +41,7 @@ const AddPlacePopup = function ({ isOpen, onClose, onAddPlace }) {
       })}
       isOpen={isOpen}
       onClose={onClose}
+      onScreenClickClose={onScreenClickClose}
       onSubmit={handleSubmit}
     />
   );

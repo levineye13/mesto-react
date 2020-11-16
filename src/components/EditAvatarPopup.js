@@ -2,7 +2,12 @@ import React, { useRef } from 'react';
 import PopupWithForm from './PopupWithForm';
 import { returnEditAvatarMarkup } from './../utils/utils';
 
-const EditAvatarPopup = function ({ isOpen, onClose, onUpdateAvatar }) {
+const EditAvatarPopup = function ({
+  isOpen,
+  onClose,
+  onScreenClickClose,
+  onUpdateAvatar,
+}) {
   const inputRef = useRef();
 
   const handleSubmit = function (evt) {
@@ -21,6 +26,7 @@ const EditAvatarPopup = function ({ isOpen, onClose, onUpdateAvatar }) {
       children={returnEditAvatarMarkup({ inputRef })}
       isOpen={isOpen}
       onClose={onClose}
+      onScreenClickClose={onScreenClickClose}
       onSubmit={handleSubmit}
     />
   );

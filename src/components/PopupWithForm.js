@@ -6,6 +6,7 @@ const PopupWithForm = React.memo(function (props) {
       className={`popup popup_type_${props.name} ${
         props.isOpen ? 'popup_opened' : ''
       }`}
+      onClick={props.onScreenClickClose}
     >
       <div className="popup__wrapper">
         <button

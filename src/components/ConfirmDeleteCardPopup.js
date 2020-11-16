@@ -4,6 +4,7 @@ import PopupWithForm from './PopupWithForm';
 const ConfirmDeleteCardPopup = function ({
   isOpen,
   onClose,
+  onScreenClickClose,
   onDeleteCard,
   card,
 }) {
@@ -21,6 +22,7 @@ const ConfirmDeleteCardPopup = function ({
       children={null}
       isOpen={isOpen}
       onClose={onClose}
+      onScreenClickClose={onScreenClickClose}
       onSubmit={handleSubmit}
     />
   );

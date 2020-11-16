@@ -1,10 +1,16 @@
 import React from 'react';
 
-const ImagePopup = function ({ card, onClose }) {
+const ImagePopup = function ({ card, onClose, onScreenClickClose }) {
   return (
-    <section className={`popup popup_type_image ${card ? 'popup_opened' : ''}`}>
+    <section
+      className={`popup popup_type_image ${card ? 'popup_opened' : ''}`}
+      onClick={onScreenClickClose}
+    >
       <div className="popup__wrapper">
-        <button className="popup__close-button button" onClick={onClose} />
+        <button
+          className={card && 'popup__close-button button'}
+          onClick={onClose}
+        />
         <figure className="popup__img-container">
           <img
             src={card && card.link}
