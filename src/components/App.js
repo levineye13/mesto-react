@@ -9,7 +9,6 @@ import AddPlacePopup from './AddPlacePopup';
 import ConfirmDeleteCardPopup from './ConfirmDeleteCardPopup';
 import { api } from './../utils/api';
 import { CurrentUserContext } from './../contexts/CurrentUserContext';
-import { validator } from './../utils/formValidator';
 import Loader from './Loader';
 import avatarImg from './../images/profile__avatar.jpg';
 

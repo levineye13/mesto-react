@@ -1,7 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import PopupWithForm from './PopupWithForm';
 import { CurrentUserContext } from './../contexts/CurrentUserContext';
-import { returnProfileMarkup } from './../utils/utils';
 
 const EditProfilePopup = function ({
   isOpen,
@@ -18,12 +17,12 @@ const EditProfilePopup = function ({
     setDescription(currentUser.about);
   }, [currentUser]);
 
-  const handleNameChange = function (evt) {
-    setName(evt.target.value);
+  const handleNameChange = function ({ target: { value } }) {
+    setName(value);
   };
 
-  const handleDescriptionChange = function (evt) {
-    setDescription(evt.target.value);
+  const handleDescriptionChange = function ({ target: { value } }) {
+    setDescription(value);
   };
 
   const handleSubmit = function (evt) {
@@ -35,17 +34,47 @@ const EditProfilePopup = function ({
     });
   };
 
+  const markup = (
+    <fieldset className="popup__info">
+      <label className="popup__form-field">
+        <input
+          type="text"
+          id="name-input"
+          className="popup__input"
+          name="name"
+          placeholder="Имя"
+          required
+          minLength="2"
+          maxLength="40"
+          value={name}
+          onChange={handleNameChange}
+        />
+        <span className="popup__error" id="name-input-error"></span>
+      </label>
+      <label className="popup__form-field">
+        <input
+          type="text"
+          id="job-input"
+          className="popup__input"
+          name="about"
+          placeholder="О себе"
+          required
+          minLength="2"
+          maxLength="200"
+          value={description}
+          onChange={handleDescriptionChange}
+        />
+        <span className="popup__error" id="job-input-error"></span>
+      </label>
+    </fieldset>
+  );
+
   return (
     <PopupWithForm
       title={'Редактировать профиль'}
       name={'profile'}
       buttonText={'Сохранить'}
-      children={returnProfileMarkup({
-        name,
-        description,
-        handleNameChange,
-        handleDescriptionChange,
-      })}
+      children={markup}
       isOpen={isOpen}
       onClose={onClose}
       onScreenClickClose={onScreenClickClose}

@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import PopupWithForm from './PopupWithForm';
-import { returnAddPlaceMarkup } from './../utils/utils';
 
 const AddPlacePopup = function ({
   isOpen,
@@ -15,8 +14,8 @@ const AddPlacePopup = function ({
     setName(evt.target.value);
   };
 
-  const handleLinkChange = function (evt) {
-    setLink(evt.target.value);
+  const handleLinkChange = function ({ target: { value } }) {
+    setLink(value);
   };
 
   const resetInputValue = function () {
@@ -34,17 +33,44 @@ const AddPlacePopup = function ({
     });
   };
 
+  const markup = (
+    <fieldset className="popup__info">
+      <label className="popup__form-field">
+        <input
+          value={name}
+          onChange={handleNameChange}
+          type="text"
+          id="place-input"
+          className="popup__input"
+          name="place"
+          placeholder="Название"
+          required
+          maxLength="30"
+        />
+        <span className="popup__error" id="place-input-error"></span>
+      </label>
+      <label className="popup__form-field">
+        <input
+          value={link}
+          onChange={handleLinkChange}
+          type="url"
+          id="link-input"
+          className="popup__input"
+          name="link"
+          placeholder="Ссылка на картинку"
+          required
+        />
+        <span className="popup__error" id="link-input-error"></span>
+      </label>
+    </fieldset>
+  );
+
   return (
     <PopupWithForm
       title={'Новое место'}
       name={'add-card'}
       buttonText={'Создать'}
-      children={returnAddPlaceMarkup({
-        name,
-        link,
-        handleNameChange,
-        handleLinkChange,
-      })}
+      children={markup}
       isOpen={isOpen}
       onClose={onClose}
       onScreenClickClose={onScreenClickClose}
