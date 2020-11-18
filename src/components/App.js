@@ -185,9 +185,6 @@ const App = function () {
     };
   }, []);
 
-  //Включение валидации форм
-  useEffect(() => validator.enableValidation(), []);
-
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="App">

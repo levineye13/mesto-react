@@ -1,6 +1,6 @@
 import { validatorConfig } from './constants';
 
-class formValidator {
+class FormValidator {
   constructor(config) {
     this._config = config;
   }
@@ -76,6 +76,6 @@ class formValidator {
   }
 }
 
-const validator = new formValidator(validatorConfig);
+const validator = new FormValidator(validatorConfig);
 
 export { validator };
