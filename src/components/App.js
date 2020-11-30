@@ -32,28 +32,28 @@ const App = function () {
   /**
    * Обработчик открытия попапа редактирования профиля.
    */
-  const handleEditProfileClick = function () {
+  const handleEditProfileClick = () => {
     setEditProfilePopupOpen(true);
   };
 
   /**
    * Обработчик открытия попапа добавления карточки.
    */
-  const handleAddPlaceClick = function () {
+  const handleAddPlaceClick = () => {
     setAddPlacePopupOpen(true);
   };
 
   /**
    * Обработчик открытия попапа редактирования аватара.
    */
-  const handleEditAvatarClick = function () {
+  const handleEditAvatarClick = () => {
     setEditAvatarPopupOpen(true);
   };
 
   /**
    * Обработчик закрытия попапов.
    */
-  const closeAllPopups = function () {
+  const closeAllPopups = () => {
     setEditProfilePopupOpen(false);
     setAddPlacePopupOpen(false);
     setEditAvatarPopupOpen(false);
@@ -61,8 +61,8 @@ const App = function () {
     setSelectedCard(null);
   };
 
-  const handleScreenClickClose = function (evt) {
-    if (evt.target.classList.contains('popup')) {
+  const handleScreenClickClose = ({ target }) => {
+    if (target.classList.contains('popup')) {
       closeAllPopups();
     }
   };
@@ -70,16 +70,16 @@ const App = function () {
   /**
    * Обработчик клика по карточке.
    */
-  const handleCardClick = function (card) {
+  const handleCardClick = (card) => {
     setSelectedCard(card);
   };
 
-  const handleDeleteButtonClick = function (card) {
+  const handleDeleteButtonClick = (card) => {
     setConfirmPopupOpen(true);
     setRemovableCard(card);
   };
 
-  const handleUpdateUser = function ({ name, about }) {
+  const handleUpdateUser = ({ name, about }) => {
     api
       .setUserInfo({ name, about })
       .then((userData) => {
@@ -89,7 +89,7 @@ const App = function () {
       .catch((error) => console.error(error));
   };
 
-  const handleUpdateAvatar = function ({ avatar }) {
+  const handleUpdateAvatar = ({ avatar }) => {
     api
       .updateUserAvatar(avatar)
       .then((userData) => {
@@ -103,7 +103,7 @@ const App = function () {
       });
   };
 
-  const handleCardLike = function (card) {
+  const handleCardLike = (card) => {
     const isLiked = card.likes.some((like) => currentUser._id === like._id);
 
     api
@@ -117,7 +117,7 @@ const App = function () {
       .catch((error) => console.error(error));
   };
 
-  const handleCardDelete = function (card) {
+  const handleCardDelete = (card) => {
     api
       .deleteCard(card._id)
       .then(() => {
@@ -132,7 +132,7 @@ const App = function () {
       .finally(() => setLoaderActive(false));
   };
 
-  const handleAddPlaceSubmit = function ({ name, link }) {
+  const handleAddPlaceSubmit = ({ name, link }) => {
     api
       .addCard({ name, link })
       .then((newCard) => {
@@ -169,7 +169,7 @@ const App = function () {
 
   //Обработчик закрытия попапа по клику на Escape
   useEffect(() => {
-    const handleEscClickClose = function (evt) {
+    const handleEscClickClose = (evt) => {
       if (evt.key === 'Escape') {
         closeAllPopups();
       }
