@@ -1,7 +1,10 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 
 const PopupWithForm = React.memo(function (props) {
-  return (
+  const modalElement = document.getElementById('modal');
+
+  return ReactDOM.createPortal(
     <section
       className={`popup popup_type_${props.name} ${
         props.isOpen ? 'popup_opened' : ''
@@ -29,7 +32,8 @@ const PopupWithForm = React.memo(function (props) {
           </button>
         </form>
       </div>
-    </section>
+    </section>,
+    modalElement
   );
 });
 

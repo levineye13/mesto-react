@@ -1,7 +1,10 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 
 const ImagePopup = function ({ card, onClose, onScreenClickClose }) {
-  return (
+  const modalElement = document.getElementById('modal');
+
+  return ReactDOM.createPortal(
     <section
       className={`popup popup_type_image ${card ? 'popup_opened' : ''}`}
       onClick={onScreenClickClose}
@@ -22,7 +25,8 @@ const ImagePopup = function ({ card, onClose, onScreenClickClose }) {
           </figcaption>
         </figure>
       </div>
-    </section>
+    </section>,
+    modalElement
   );
 };
 
