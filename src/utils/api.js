@@ -1,5 +1,5 @@
 class Api {
-  constructor(baseUrl, headers) {
+  constructor({ baseUrl, headers }) {
     this._baseUrl = baseUrl;
     this._headers = headers;
   }
@@ -148,7 +148,10 @@ class Api {
 }
 
 //Экземпляр Api для осуществления запросов к серверу
-export const api = new Api('https://mesto.nomoreparties.co/v1/cohort-16', {
-  authorization: 'f1f27dcb-4c71-4cd5-a34d-2e8f5fd4811e',
-  'Content-Type': 'application/json',
+export const api = new Api({
+  baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-16',
+  headers: {
+    authorization: 'f1f27dcb-4c71-4cd5-a34d-2e8f5fd4811e',
+    'Content-Type': 'application/json',
+  },
 });
