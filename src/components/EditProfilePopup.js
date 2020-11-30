@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import PopupWithForm from './PopupWithForm';
 import { CurrentUserContext } from './../contexts/CurrentUserContext';
+import { useFormWithValidation } from './../hooks/useFormWithValidation';
 
 const EditProfilePopup = function ({
   isOpen,
@@ -9,28 +10,26 @@ const EditProfilePopup = function ({
   onUpdateUser,
 }) {
   const currentUser = useContext(CurrentUserContext);
-  const [name, setName] = useState(currentUser.name);
-  const [description, setDescription] = useState(currentUser.about);
+  const {
+    values,
+    handleInputChange,
+    errors,
+    isValid,
+    resetForm,
+  } = useFormWithValidation();
 
   useEffect(() => {
-    setName(currentUser.name);
-    setDescription(currentUser.about);
-  }, [currentUser]);
+    if (currentUser) {
+      resetForm(currentUser, {}, true);
+    }
+  }, [isOpen, currentUser, resetForm]);
 
-  const handleNameChange = function ({ target: { value } }) {
-    setName(value);
-  };
-
-  const handleDescriptionChange = function ({ target: { value } }) {
-    setDescription(value);
-  };
-
-  const handleSubmit = function (evt) {
+  const handleSubmit = (evt) => {
     evt.preventDefault();
 
     onUpdateUser({
-      name,
-      about: description,
+      name: values.name,
+      about: values.about,
     });
   };
 
@@ -46,10 +45,12 @@ const EditProfilePopup = function ({
           required
           minLength="2"
           maxLength="40"
-          value={name}
-          onChange={handleNameChange}
+          value={values.name || ''}
+          onChange={handleInputChange}
         />
-        <span className="popup__error" id="name-input-error"></span>
+        <span className="popup__error" id="name-input-error">
+          {errors.name || ''}
+        </span>
       </label>
       <label className="popup__form-field">
         <input
@@ -61,10 +62,12 @@ const EditProfilePopup = function ({
           required
           minLength="2"
           maxLength="200"
-          value={description}
-          onChange={handleDescriptionChange}
+          value={values.about || ''}
+          onChange={handleInputChange}
         />
-        <span className="popup__error" id="job-input-error"></span>
+        <span className="popup__error" id="job-input-error">
+          {errors.about || ''}
+        </span>
       </label>
     </fieldset>
   );
@@ -79,6 +82,7 @@ const EditProfilePopup = function ({
       onClose={onClose}
       onScreenClickClose={onScreenClickClose}
       onSubmit={handleSubmit}
+      isValid={isValid}
     />
   );
 };

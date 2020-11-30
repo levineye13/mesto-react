@@ -27,7 +27,13 @@ const PopupWithForm = React.memo(function (props) {
         >
           <h2 className="popup__title">{props.title}</h2>
           {props.children}
-          <button className="popup__save-button button" type="submit">
+          <button
+            className={`popup__save-button button ${
+              props.isValid ? '' : 'button_inactive'
+            }`}
+            type="submit"
+            disabled={!props.isValid}
+          >
             {props.buttonText}
           </button>
         </form>

@@ -89,7 +89,7 @@ const App = function () {
       .catch((error) => console.error(error));
   };
 
-  const handleUpdateAvatar = function ({ avatar, resetInputValue }) {
+  const handleUpdateAvatar = function ({ avatar }) {
     api
       .updateUserAvatar(avatar)
       .then((userData) => {
@@ -100,7 +100,6 @@ const App = function () {
       .catch((error) => console.error(error))
       .finally(() => {
         setLoaderActive(false);
-        resetInputValue();
       });
   };
 
@@ -133,7 +132,7 @@ const App = function () {
       .finally(() => setLoaderActive(false));
   };
 
-  const handleAddPlaceSubmit = function ({ name, link, resetInputValue }) {
+  const handleAddPlaceSubmit = function ({ name, link }) {
     api
       .addCard({ name, link })
       .then((newCard) => {
@@ -145,7 +144,6 @@ const App = function () {
       .catch((error) => console.error(error))
       .finally(() => {
         setLoaderActive(false);
-        resetInputValue();
       });
   };
 

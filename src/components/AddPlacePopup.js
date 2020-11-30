@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PopupWithForm from './PopupWithForm';
+import { useFormWithValidation } from './../hooks/useFormWithValidation';
 
 const AddPlacePopup = function ({
   isOpen,
@@ -7,29 +8,24 @@ const AddPlacePopup = function ({
   onScreenClickClose,
   onAddPlace,
 }) {
-  const [name, setName] = useState('');
-  const [link, setLink] = useState('');
+  const {
+    values,
+    handleInputChange,
+    errors,
+    isValid,
+    resetForm,
+  } = useFormWithValidation();
 
-  const handleNameChange = function (evt) {
-    setName(evt.target.value);
-  };
+  useEffect(() => {
+    resetForm();
+  }, [isOpen, resetForm]);
 
-  const handleLinkChange = function ({ target: { value } }) {
-    setLink(value);
-  };
-
-  const resetInputValue = function () {
-    setName('');
-    setLink('');
-  };
-
-  const handleSubmit = function (evt) {
+  const handleSubmit = (evt) => {
     evt.preventDefault();
 
     onAddPlace({
-      name,
-      link,
-      resetInputValue,
+      name: values.place,
+      link: values.link,
     });
   };
 
@@ -37,8 +33,8 @@ const AddPlacePopup = function ({
     <fieldset className="popup__info">
       <label className="popup__form-field">
         <input
-          value={name}
-          onChange={handleNameChange}
+          value={values.place || ''}
+          onChange={handleInputChange}
           type="text"
           id="place-input"
           className="popup__input"
@@ -47,12 +43,14 @@ const AddPlacePopup = function ({
           required
           maxLength="30"
         />
-        <span className="popup__error" id="place-input-error"></span>
+        <span className="popup__error" id="place-input-error">
+          {errors.place || ''}
+        </span>
       </label>
       <label className="popup__form-field">
         <input
-          value={link}
-          onChange={handleLinkChange}
+          value={values.link || ''}
+          onChange={handleInputChange}
           type="url"
           id="link-input"
           className="popup__input"
@@ -60,7 +58,9 @@ const AddPlacePopup = function ({
           placeholder="Ссылка на картинку"
           required
         />
-        <span className="popup__error" id="link-input-error"></span>
+        <span className="popup__error" id="link-input-error">
+          {errors.link || ''}
+        </span>
       </label>
     </fieldset>
   );
@@ -75,6 +75,7 @@ const AddPlacePopup = function ({
       onClose={onClose}
       onScreenClickClose={onScreenClickClose}
       onSubmit={handleSubmit}
+      isValid={isValid}
     />
   );
 };

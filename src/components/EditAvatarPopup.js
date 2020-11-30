@@ -1,5 +1,6 @@
-import React, { useRef } from 'react';
+import React, { useEffect } from 'react';
 import PopupWithForm from './PopupWithForm';
+import { useFormWithValidation } from './../hooks/useFormWithValidation';
 
 const EditAvatarPopup = function ({
   isOpen,
@@ -7,18 +8,23 @@ const EditAvatarPopup = function ({
   onScreenClickClose,
   onUpdateAvatar,
 }) {
-  const inputRef = useRef();
+  const {
+    values,
+    handleInputChange,
+    errors,
+    isValid,
+    resetForm,
+  } = useFormWithValidation();
 
-  const resetInputValue = function () {
-    inputRef.current.value = '';
-  };
+  useEffect(() => {
+    resetForm();
+  }, [isOpen, resetForm]);
 
-  const handleSubmit = function (evt) {
+  const handleSubmit = (evt) => {
     evt.preventDefault();
 
     onUpdateAvatar({
-      avatar: inputRef.current.value,
-      resetInputValue,
+      avatar: values.link,
     });
   };
 
@@ -26,7 +32,8 @@ const EditAvatarPopup = function ({
     <fieldset className="popup__info">
       <label className="popup__form-field">
         <input
-          ref={inputRef}
+          value={values.link || ''}
+          onChange={handleInputChange}
           type="url"
           id="link-input"
           className="popup__input"
@@ -34,7 +41,9 @@ const EditAvatarPopup = function ({
           placeholder="Ссылка на картинку"
           required
         />
-        <span className="popup__error" id="link-input-error"></span>
+        <span className="popup__error" id="link-input-error">
+          {errors.link || ''}
+        </span>
       </label>
     </fieldset>
   );
@@ -49,6 +58,7 @@ const EditAvatarPopup = function ({
       onClose={onClose}
       onScreenClickClose={onScreenClickClose}
       onSubmit={handleSubmit}
+      isValid={isValid}
     />
   );
 };

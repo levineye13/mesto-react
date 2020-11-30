@@ -8,7 +8,7 @@ const ConfirmDeleteCardPopup = function ({
   onDeleteCard,
   card,
 }) {
-  const handleSubmit = function (evt) {
+  const handleSubmit = (evt) => {
     evt.preventDefault();
     onDeleteCard(card);
   };
@@ -23,6 +23,7 @@ const ConfirmDeleteCardPopup = function ({
       onClose={onClose}
       onScreenClickClose={onScreenClickClose}
       onSubmit={handleSubmit}
+      isValid={true}
     />
   );
 };
