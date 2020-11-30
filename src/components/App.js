@@ -79,92 +79,110 @@ const App = function () {
     setRemovableCard(card);
   };
 
-  const handleUpdateUser = ({ name, about }) => {
-    api
-      .setUserInfo({ name, about })
-      .then((userData) => {
-        setCurrentUser(userData);
-        closeAllPopups();
-      })
-      .catch((error) => console.error(error));
+  const handleUpdateUser = async ({ name, about }) => {
+    try {
+      const res = await api.setUserInfo({ name, about });
+      if (res) {
+        setCurrentUser(res);
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      closeAllPopups();
+    }
   };
 
-  const handleUpdateAvatar = ({ avatar }) => {
-    api
-      .updateUserAvatar(avatar)
-      .then((userData) => {
-        closeAllPopups();
-        setLoaderActive(true);
-        setCurrentUser(userData);
-      })
-      .catch((error) => console.error(error))
-      .finally(() => {
-        setLoaderActive(false);
-      });
+  const handleUpdateAvatar = async ({ avatar }) => {
+    try {
+      const res = await api.updateUserAvatar(avatar);
+      setLoaderActive(true);
+      if (res) {
+        setCurrentUser(res);
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      closeAllPopups();
+      setLoaderActive(false);
+    }
   };
 
-  const handleCardLike = (card) => {
+  const handleCardLike = async (card) => {
     const isLiked = card.likes.some((like) => currentUser._id === like._id);
 
-    api
-      .changeLikeCardStatus(card._id, isLiked ? 'DELETE' : 'PUT')
-      .then((newCard) => {
+    try {
+      const newCard = await api.changeLikeCardStatus(
+        card._id,
+        isLiked ? 'DELETE' : 'PUT'
+      );
+      if (newCard) {
         const newCards = cards.map((currentCard) =>
           currentCard._id === card._id ? newCard : currentCard
         );
         setCards(newCards);
-      })
-      .catch((error) => console.error(error));
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      closeAllPopups();
+    }
   };
 
-  const handleCardDelete = (card) => {
-    api
-      .deleteCard(card._id)
-      .then(() => {
-        closeAllPopups();
-        setLoaderActive(true);
-        const newCards = cards.filter(
-          (currentCard) => currentCard._id !== card._id
-        );
-        setCards(newCards);
-      })
-      .catch((error) => console.error(error))
-      .finally(() => setLoaderActive(false));
+  const handleCardDelete = async (card) => {
+    try {
+      const res = await api.deleteCard(card._id);
+      closeAllPopups();
+      setLoaderActive(true);
+
+      const newCards = cards.filter(
+        (currentCard) => currentCard._id !== card._id
+      );
+
+      setCards(newCards);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoaderActive(false);
+    }
   };
 
-  const handleAddPlaceSubmit = ({ name, link }) => {
-    api
-      .addCard({ name, link })
-      .then((newCard) => {
-        closeAllPopups();
-        //TODO не отображается спиннер при удалении/добавлении карточки даже в slow 3g =(
-        setLoaderActive(true);
+  const handleAddPlaceSubmit = async ({ name, link }) => {
+    try {
+      const newCard = await api.addCard({ name, link });
+      closeAllPopups();
+      setLoaderActive(true);
+
+      if (newCard) {
         setCards([newCard, ...cards]);
-      })
-      .catch((error) => console.error(error))
-      .finally(() => {
-        setLoaderActive(false);
-      });
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoaderActive(false);
+    }
   };
 
   /**
    * Отрисовка первоначальных данных при монтировании компонента.
    * (Promise.allSettled)
    */
-  useEffect(() => {
-    api
-      .getAllInitialData()
-      .then((dataArray) => dataArray.map((item) => item.value))
-      .then(([dataUser, dataCards]) => {
-        if (dataUser) {
-          setCurrentUser(dataUser);
-        }
-        if (dataCards) {
-          setCards(dataCards);
-        }
-      })
-      .catch((error) => console.error(error))
-      .finally(() => setLoaderActive(false));
+  useEffect(async () => {
+    try {
+      const dataArray = await api.getAllInitialData();
+      const [dataUser, dataCards] = dataArray.map((item) => item.value);
+
+      if (dataUser) {
+        setCurrentUser(dataUser);
+      }
+
+      if (dataCards) {
+        setCards(dataCards);
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoaderActive(false);
+    }
   }, []);
 
   //Обработчик закрытия попапа по клику на Escape

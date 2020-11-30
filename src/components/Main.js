@@ -18,8 +18,8 @@ const Main = function ({
       <section className="profile content__profile">
         <div className="profile__avatar-container">
           <img
-            src={currentUser.avatar}
-            alt={currentUser.name}
+            src={currentUser.avatar || ''}
+            alt={currentUser.name || ''}
             className="profile__avatar"
           />
           <button
@@ -29,9 +29,9 @@ const Main = function ({
           />
         </div>
         <div className="profile__info">
-          <h1 className="profile__title">{currentUser.name}</h1>
+          <h1 className="profile__title">{currentUser.name || ''}</h1>
           <button className="profile__edit-button" onClick={onEditProfile} />
-          <p className="profile__subtitle">{currentUser.about}</p>
+          <p className="profile__subtitle">{currentUser.about || ''}</p>
         </div>
         <button className="profile__add-button" onClick={onAddPlace} />
       </section>
