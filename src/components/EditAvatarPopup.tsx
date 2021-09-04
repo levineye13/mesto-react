@@ -1,38 +1,40 @@
-import React, { useEffect } from 'react';
+import React, { FC, ReactElement, useEffect } from 'react';
 import PopupWithForm from './PopupWithForm';
-import { useFormWithValidation } from './../hooks/useFormWithValidation';
+import { useFormWithValidation } from '../hooks/useFormWithValidation';
 
-const EditAvatarPopup = function ({
+interface IAvatarPopupProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onScreenClickClose: () => void;
+  onUpdateAvatar: (avatar: { avatar: string }) => void;
+}
+
+const EditAvatarPopup: FC<IAvatarPopupProps> = ({
   isOpen,
   onClose,
   onScreenClickClose,
   onUpdateAvatar,
-}) {
-  const {
-    values,
-    handleInputChange,
-    errors,
-    isValid,
-    resetForm,
-  } = useFormWithValidation();
+}: IAvatarPopupProps): ReactElement => {
+  const { values, handleInputChange, errors, isValid, resetForm } =
+    useFormWithValidation();
 
   useEffect(() => {
     resetForm();
   }, [isOpen, resetForm]);
 
-  const handleSubmit = (evt) => {
+  const handleSubmit = (evt: React.FormEvent<HTMLFormElement>): void => {
     evt.preventDefault();
 
     onUpdateAvatar({
-      avatar: values.link,
+      avatar: values.link as string,
     });
   };
 
-  const markup = (
+  const markup: ReactElement = (
     <fieldset className="popup__info">
       <label className="popup__form-field">
         <input
-          value={values.link || ''}
+          value={values.link as string}
           onChange={handleInputChange}
           type="url"
           id="link-input"
@@ -42,7 +44,7 @@ const EditAvatarPopup = function ({
           required
         />
         <span className="popup__error" id="link-input-error">
-          {errors.link || ''}
+          {errors.link}
         </span>
       </label>
     </fieldset>
@@ -50,9 +52,9 @@ const EditAvatarPopup = function ({
 
   return (
     <PopupWithForm
-      title={'Обновить аватар'}
-      name={'update-avatar'}
-      buttonText={'Обновить'}
+      title="Обновить аватар"
+      name="update-avatar"
+      buttonText="Обновить"
       children={markup}
       isOpen={isOpen}
       onClose={onClose}
