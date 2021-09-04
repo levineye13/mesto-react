@@ -1,9 +1,21 @@
-import React from 'react';
+import React, { FC, ReactElement } from 'react';
 import ReactDOM from 'react-dom';
 
-const PopupWithForm = React.memo(function (props) {
-  const modalElement = document.getElementById('modal');
+import { modalElement } from '../utils/constants';
 
+interface IFormPopupProps {
+  name: string;
+  isOpen: boolean;
+  title: string;
+  isValid: boolean;
+  buttonText: string;
+  children: ReactElement | null;
+  onClose: () => void;
+  onScreenClickClose: ({ target }: React.MouseEvent<HTMLElement>) => void;
+  onSubmit: (evt: React.FormEvent<HTMLFormElement>) => void;
+}
+
+const PopupWithForm: FC<IFormPopupProps> = (props): ReactElement => {
   return ReactDOM.createPortal(
     <section
       className={`popup popup_type_${props.name} ${
@@ -41,6 +53,6 @@ const PopupWithForm = React.memo(function (props) {
     </section>,
     modalElement
   );
-});
+};
 
 export default PopupWithForm;
