@@ -12,10 +12,3 @@ export interface ICard {
   readonly likes: IUser[];
   readonly owner: IUser;
 }
-
-export interface ICardProps {
-  data: ICard;
-  onClick: (data: ICard) => void;
-  onDelete: (data: ICard) => void;
-  onLike: (data: ICard) => void;
-}
