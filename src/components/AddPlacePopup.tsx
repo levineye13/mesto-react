@@ -1,31 +1,34 @@
-import React, { useState, useEffect } from 'react';
-import PopupWithForm from './PopupWithForm';
-import { useFormWithValidation } from './../hooks/useFormWithValidation';
+import React, { useEffect, ReactElement, FC } from 'react';
 
-const AddPlacePopup = function ({
+import PopupWithForm from './PopupWithForm';
+import { useFormWithValidation } from '../hooks/useFormWithValidation';
+
+interface IAddPopupProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onScreenClickClose: (evt: React.MouseEvent<HTMLElement>) => void;
+  onAddPlace: (place: { name: string; link: string }) => void;
+}
+
+const AddPlacePopup: FC<IAddPopupProps> = ({
   isOpen,
   onClose,
   onScreenClickClose,
   onAddPlace,
-}) {
-  const {
-    values,
-    handleInputChange,
-    errors,
-    isValid,
-    resetForm,
-  } = useFormWithValidation();
+}): ReactElement => {
+  const { values, handleInputChange, errors, isValid, resetForm } =
+    useFormWithValidation();
 
   useEffect(() => {
     resetForm();
   }, [isOpen, resetForm]);
 
-  const handleSubmit = (evt) => {
+  const handleSubmit = (evt: React.FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
 
     onAddPlace({
-      name: values.place,
-      link: values.link,
+      name: values.place as string,
+      link: values.link as string,
     });
   };
 
@@ -33,7 +36,7 @@ const AddPlacePopup = function ({
     <fieldset className="popup__info">
       <label className="popup__form-field">
         <input
-          value={values.place || ''}
+          value={values.place as string}
           onChange={handleInputChange}
           type="text"
           id="place-input"
@@ -41,15 +44,15 @@ const AddPlacePopup = function ({
           name="place"
           placeholder="Название"
           required
-          maxLength="30"
+          maxLength={30}
         />
         <span className="popup__error" id="place-input-error">
-          {errors.place || ''}
+          {errors.place as string}
         </span>
       </label>
       <label className="popup__form-field">
         <input
-          value={values.link || ''}
+          value={values.link as string}
           onChange={handleInputChange}
           type="url"
           id="link-input"
@@ -59,7 +62,7 @@ const AddPlacePopup = function ({
           required
         />
         <span className="popup__error" id="link-input-error">
-          {errors.link || ''}
+          {errors.link as string}
         </span>
       </label>
     </fieldset>
@@ -67,9 +70,9 @@ const AddPlacePopup = function ({
 
   return (
     <PopupWithForm
-      title={'Новое место'}
-      name={'add-card'}
-      buttonText={'Создать'}
+      title="Новое место"
+      name="add-card"
+      buttonText="Создать"
       children={markup}
       isOpen={isOpen}
       onClose={onClose}
