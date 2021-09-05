@@ -12,7 +12,8 @@ interface IMain {
   onEditAvatar: () => void;
   onCardClick: (card: ICard) => void;
   onDeleteButtonClick: (card: ICard) => void;
-  onCardLike: (card: ICard) => void;
+  onLike: (card: ICard) => void;
+  onDislike: (card: ICard) => void;
 }
 
 const Main: FC<IMain> = ({
@@ -22,7 +23,8 @@ const Main: FC<IMain> = ({
   onEditAvatar,
   onCardClick,
   onDeleteButtonClick,
-  onCardLike,
+  onLike,
+  onDislike,
 }): ReactElement => {
   const currentUser: IUser = useContext(CurrentUserContext);
 
@@ -57,7 +59,8 @@ const Main: FC<IMain> = ({
               data={card}
               onClick={onCardClick}
               onDelete={onDeleteButtonClick}
-              onLike={onCardLike}
+              onLike={onLike}
+              onDislike={onDislike}
               key={card._id}
             />
           )}

@@ -7,6 +7,7 @@ interface ICardProps {
   onClick: (data: ICard) => void;
   onDelete: (data: ICard) => void;
   onLike: (data: ICard) => void;
+  onDislike: (data: ICard) => void;
 }
 
 const Card: FC<ICardProps> = ({
@@ -14,6 +15,7 @@ const Card: FC<ICardProps> = ({
   onClick,
   onDelete,
   onLike,
+  onDislike,
 }): ReactElement => {
   const currentUser: IUser = React.useContext(CurrentUserContext);
 
@@ -37,7 +39,11 @@ const Card: FC<ICardProps> = ({
   const handleLikeClick = (evt: React.MouseEvent<HTMLButtonElement>): void => {
     evt.stopPropagation();
 
-    onLike(data);
+    if (isLiked) {
+      onDislike(data);
+    } else {
+      onLike(data);
+    }
   };
 
   return (
